@@ -18,8 +18,8 @@ const addOrFormSwitch = ( event ) => {
         return
     }
 
-    event.target.parentNode.querySelector('form').classList.toggle('hidden')
-    event.target.classList.toggle('hidden')
+    node.parentNode.querySelector('form').classList.toggle('hidden')
+    node.classList.toggle('hidden')
 }
 const formSerialize = ( event ) => {
     const column_to_comment = event.target.id
