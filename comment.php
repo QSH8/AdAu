@@ -1,5 +1,6 @@
 <?php
-    require 'backend/db.php';    
+    require 'backend/db.php';
+
     if (isset($_POST['formValue'])) {
         $comment = R::dispense('comments');
 
@@ -10,13 +11,12 @@
         $comment->datetime = date('d.m.Y H:i:s');
         R::store($comment);
 
-        echo          date('d.m.Y H:i:s').'
-                <span style="color: rgba(255, 174, 0, 0.911);">
-                    '.$_SESSION['logged_user']['login'].'
-                </span>
-                  : '.$_POST['formValue'];
+        echо date('d.m.Y H:i:s')
+             . '<span style="color: rgba(255, 174, 0, 0.911);">'
+             . $_SESSION['logged_user']['login']
+             . '</span>:'
+             . $_POST['formValue'];
 
     } else {
         echo "Something going bad..((";
     }
-?>
