@@ -1,16 +1,16 @@
 <?php
     require 'backend/db.php';
+
     $companies = R::findAll('companies');
 
     if (isset($_POST['do_delete']) and !$companies == null) {
         $companyTitle = $_POST['do_delete'];
-        $company_to_delete = R::findOne('companies', 'title = ?', array($companyTitle));
+        $companyToDelete = R::findOne('companies', 'title = ?', array($companyTitle));
         R::trash($company_to_delete);
-        header('Location: http://localhost/AdAurum/');
+        header('Location: /');
     }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,16 +30,19 @@
             <div id="companies" class="header__nav-item">
                 <div class="header__nav-item-btn"><a href="http://localhost/AdAurum/index.php">Компании</a></div>
             </div>
-            <?php  if (isset($_SESSION['logged_user'])) {
-            echo '<a href="logout.php">
+            
+            <?php if (isset($_SESSION['logged_user'])): ?>
+            <?php echo '<a href="logout.php">
                     <div id="sign" class="header__nav-item">
                     
                         <div class="header__nav-item-text">Выйти</div>
                         <img class="header__nav-item-icon" src="./icons/auth.png" alt="">
                     </div>
                 </a>';
-            } else {
-                echo '<div class="header__nav-item-wrapper">
+            ?>
+            
+            <?php elseif: ?>
+            <?php echo '<div class="header__nav-item-wrapper">
                         <a href="auth.php">
                             <div id="sign" class="header__nav-item">
                         
@@ -54,36 +57,35 @@
                             </div>
                         </a>
                       </div>';
-            }?>
-            
+            ?>
+            <?php endif ?>           
         </div>
 
     </header>
     <main class="main">
         <div class="main__content">
-            <?php foreach($companies as $company) {
-                echo    '<div class="main__content-item" style="display: block;">';
-                        if(isset($_SESSION['logged_user'])) {
-                            echo '<form class="main__btn-delete" method="post">
-                                    <button name="do_delete" type="submit" value="'.$company['title'].'"></button>
-                                    </form>';
-                        }
-                        
-                echo    '<form action="company.php" method="post">
-                            <input class="main__content-item-show" type="submit" name="show_company" value="'.$company['title'].'">
-                        </form>
-                            <p class="main__content-item-text">'.$company['address'].'</p>
-                            <p class="main__content-item-text">'.$company['phone'].'</p>
-                            <p class="main__content-item-text">'.$company['CEO'].'</p>
-                        </div>';
-            }?>
-            <?php if (isset($_SESSION['logged_user'])) {
+            <?php foreach($companies as $company): ?>
+                <?php echo '<div class="main__content-item" style="display: block;">'; ?>
+
+                    <?php if(isset($_SESSION['logged_user'])): ?>
+                        echo '<form class="main__btn-delete" method="post">
+                                  <button name="do_delete" type="submit" value="'.$company['title'].'"></button>
+                              </form>';
+                    <?php endif ?>
+                    <?php echo '<form action="company.php" method="post">
+                                    <input class="main__content-item-show" type="submit" name="show_company" value="'.$company['title'].'">
+                                </form>
+                                <p class="main__content-item-text">'.$company['address'].'</p>
+                                <p class="main__content-item-text">'.$company['phone'].'</p>
+                                <p class="main__content-item-text">'.$company['CEO'].'</p>
+                            </div>';
+                    ?>
+            <?php endforeach ?>
+            <?php if (isset($_SESSION['logged_user'])): ?>
                 echo '<div class="main__add-company">
-                        <a class="main__add-company-btn" href="addCompany.php">
-                            Новая компания
-                        </a>
+                          <a class="main__add-company-btn" href="addCompany.php">Новая компания</a>
                       </div>';
-            }?>
+            <?php endif ?>
         </div>
     </main>
 <script src="./scripts/script.js"></script>
